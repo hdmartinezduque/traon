@@ -1,7 +1,7 @@
 version: '3'
 services:
-  app:  
-    mem_limit: 4g
+  app:
+    mem_limit: 1g
     cpus: 1
     build:
       context: ./
@@ -10,16 +10,16 @@ services:
       - .:/var/www/html
       - .env.dev:/var/www/html/.env
     ports:
-      - "8082:80"
+      - "80:80"
     environment:
       - APP_ENV=local
       - APP_DEBUG=true
       - APP_KEY=base64:tLmYfUrrZITzLIkSjFnV+PCAFxkdU+duUxjVSIlrrHo=
-      - DB_CONNECTION=mysql 
+      - DB_CONNECTION=mysql
     networks:
       - laravel
     depends_on:
-      - mysql    
+      - mysql
   mysql:
     image: 'mysql:8.0'
     mem_limit: 1g
@@ -31,13 +31,25 @@ services:
        - './db/init.sql:/docker-entrypoint-initdb.d/01init.sql'
     ports:
       - "3306:3306"
-    environment:   
-      - MYSQL_ROOT_PASSWORD=root   
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=myapp
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=root 
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=root
     networks:
-      - laravel  
+      - laravel
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d/
+    networks:
+      - laravel
+
 networks:
     laravel:
         driver: bridge
