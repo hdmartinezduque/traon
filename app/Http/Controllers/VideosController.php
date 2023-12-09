@@ -7,7 +7,6 @@ use App\Models\Video;
 
 class VideosController extends Controller
 {
-
     public function store(Request $request){
         $request->validate([
             'name' => 'required|min:3',
@@ -21,20 +20,15 @@ class VideosController extends Controller
         $video->link = $request->link;
         $video->type = $request->type;
         $video->domain = $request->domain;
-        if ($video->type == 'transmision') {
-            Video::where('type', 'transmision')
-                ->where('status', 'active')->update(['status'=>'inactive']);
-        }
         $video->save();
 
-        return redirect()->route('videos.index')->with('success', 'Creado correctamente');
+        return redirect()->route('categories.index')->with('success', 'Creado exitosamente');
 
     }
 
     public function index(){
-        $transmisiones = Video::all();
-        $videos = Video::paginate(3);
-        return view('videos.index', ['videos' => $videos, 'transmisiones' => $transmisiones]);
+        $videos = Video::all();
+        return view('videos.index', ['videos' => $videos]);
     }
 
     public function show($id){
@@ -46,7 +40,7 @@ class VideosController extends Controller
         $video = Video::find($id);
         $video->title = $request->title;
         $video->save();
-        
+        // return view('videos.index', ['success' => 'Actualizado correctamente']);
         return redirect()->route('videos')->with('success', 'Actualizado correctamente');
     }
 
@@ -54,7 +48,7 @@ class VideosController extends Controller
         $video = Video::find($id);
         $video->delete();
 
-        return redirect()->route('videos.index')->with('success', 'Se ha eliminado!');
+        return redirect()->route('videos')->with('success', 'Se eliminado!');
     }
 
 }
