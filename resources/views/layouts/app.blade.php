@@ -24,7 +24,7 @@
             }
     
             .color-container{
-                width: 16px;
+                width: 500px;
                 height: 16px;
                 display: inline-block;
                 border-radius: 4px;
