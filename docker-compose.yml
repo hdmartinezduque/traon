@@ -18,8 +18,6 @@ services:
       - DB_CONNECTION=mysql
     networks:
       - laravel
-    depends_on:
-      - mysql
   mysql:
     image: 'mysql:8.0'
     mem_limit: 1g
@@ -38,6 +36,7 @@ services:
       - MYSQL_PASSWORD=root
     networks:
       - laravel
+
   nginx:
     image: nginx:alpine
     container_name: nginx
@@ -55,4 +54,5 @@ networks:
         driver: bridge
 volumes:
     mysql8:
-        driver: local
+    app:
+    nginx:
