@@ -1,4 +1,4 @@
-FROM composer:2.4 as build
+chmod 777 -R /var/www/html/storage/nnnnnnFROM composer:2.4 as build
 COPY . /app/
 RUN composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction
 
